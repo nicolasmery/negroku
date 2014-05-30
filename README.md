@@ -9,6 +9,10 @@ All the server configurations pre-defined in the configuration files generated b
 
 ## This is a rewrite that will use capistrano 3
 
+## Notes
+We are using the gems installed per project and defined in the gemfiles
+So is not necessary to globally install unicorn or eye
+
 
 
 

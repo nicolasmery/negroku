@@ -45,7 +45,7 @@ namespace :load do
     ###################################
     ## capistrano3/nginx variables
 
-    # # Add bower to :nodenv_map_bins
+    # Set the app server socket if nginx is being used
     set :app_server_socket, -> { fetch(:unicorn_socket) } if was_required? 'capistrano/nginx'
 
   end
@@ -74,8 +74,10 @@ namespace :negroku do
 
     # Reload or restart unicorn after the application is published
     after 'deploy:publishing', 'restart' do
-      invoke 'negroku:unicorn:setup'
-      invoke fetch(:unicorn_preload)? 'unicorn:restart' : 'unicorn:reload'
+      if fetch(:unicorn_manage_restart, true)
+        invoke 'negroku:unicorn:setup'
+        invoke fetch(:unicorn_preload)? 'unicorn:restart' : 'unicorn:reload'
+      end
     end
 
     # Ensure the folders needed exist
